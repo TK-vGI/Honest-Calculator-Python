@@ -27,46 +27,142 @@
 # # End of Stage 1
 
 
-# Stage 2
+# # Stage 2
+# msg_0 = "Enter an equation"
+# msg_1 = "Do you even know what numbers are? Stay focused!"
+# msg_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
+# msg_3 = "Yeah... division by zero. Smart move..."
+#
+# while True:
+#     print(msg_0)
+#     calc = input().split(" ")
+#     # print(calc)
+#     x = calc[0]
+#     operation = calc[1]
+#     y = calc[2]
+#
+#     try:
+#         float(x)
+#         float(y)
+#     except ValueError:
+#         print(msg_1)
+#         continue
+#     else:
+#         if operation not in ["+", "-", "*", "/"]:
+#             print(msg_2)
+#             continue
+#         elif operation == "/" and float(y) == 0:
+#             print(msg_3)
+#             continue
+#     break
+#
+# result = 0.0
+#
+# if operation == "+":
+#     result = float(x) + float(y)
+# elif operation == "-":
+#     result = float(x) - float(y)
+# elif operation == "*":
+#     result = float(x) * float(y)
+# elif operation == "/":
+#     result = float(x) / float(y)
+#
+# print(result)
+#
+# # End of Stage 2
+
+
+# Stage 3
+import sys
+
+# List of input and warning/error messages.
 msg_0 = "Enter an equation"
 msg_1 = "Do you even know what numbers are? Stay focused!"
 msg_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
 msg_3 = "Yeah... division by zero. Smart move..."
+msg_4 = "Do you want to store the result? (y / n):"
+msg_5 = "Do you want to continue calculations? (y / n):"
 
+# Variable for storing the result of a correct equation.
+memory = 0.0
+
+# Main loop. It loops until the user chooses 'n = no'. Decision-making is done in the inner loop at the end.
 while True:
-    print(msg_0)
-    calc = input().split(" ")
-    # print(calc)
-    x = calc[0]
-    operation = calc[1]
-    y = calc[2]
+    # Loop for checking correct operands and operator.
+    while True:
+        print(msg_0)
+        calc = input().split(" ")
+        # print(calc)
+        x = calc[0]
+        operation = calc[1]
+        y = calc[2]
 
-    try:
-        float(x)
-        float(y)
-    except ValueError:
-        print(msg_1)
-        continue
-    else:
-        if operation not in ["+", "-", "*", "/"]:
-            print(msg_2)
+        # Check if any operand is 'M' = memory, then assign it to x and/or y.
+        if x == "M":
+            x = memory
+        if y == "M":
+            y = memory
+
+        # Operands must be numbers.
+        # Operator must be one of the following: +, -, *, /
+        try:
+            float(x)
+            float(y)
+        except ValueError:
+            print(msg_1)
             continue
-        elif operation == "/" and float(y) == 0:
-            print(msg_3)
+        else:
+            if operation not in ["+", "-", "*", "/"]:
+                print(msg_2)
+                continue
+            elif operation == "/" and float(y) == 0:
+                print(msg_3)
+                continue
+        break
+
+    # Calculates and prints the result of the input equation.
+    result = 0.0
+    match operation:
+        case "+":
+            # noinspection PyRedeclaration
+            result = float(x) + float(y)
+        case "-":
+            # noinspection PyRedeclaration
+            result = float(x) - float(y)
+        case "*":
+            # noinspection PyRedeclaration
+            result = float(x) * float(y)
+        case "/":
+            # noinspection PyRedeclaration
+            result = float(x) / float(y)
+        case _:
+            break
+
+    print(result)
+
+    # Loop for storing the result in memory. It loops until the user chooses 'y = yes' or 'n = no'.
+    while True:
+        print(msg_4)
+        store_input = input()
+
+        if store_input == "y":
+            memory = result
+            break
+        elif store_input == "n":
+            break
+        else:
             continue
-    break
 
-result = 0.0
+    # Loop for continuing with the calculator. It loops until the user chooses 'y = yes' or 'n = no'.
+    while True:
+        print(msg_5)
+        continue_input = input()
 
-if operation == "+":
-    result = float(x) + float(y)
-elif operation == "-":
-    result = float(x) - float(y)
-elif operation == "*":
-    result = float(x) * float(y)
-elif operation == "/":
-    result = float(x) / float(y)
+        if continue_input == "n":
+            sys.exit()
+        elif continue_input == "y":
+            break
+        else:
+            continue
 
-print(result)
-
-# End of Stage 2
+# End of Stage 3
