@@ -72,7 +72,104 @@
 # # End of Stage 2
 
 
-# Stage 3
+# # Stage 3
+# import sys
+#
+# # List of input and warning/error messages.
+# msg_0 = "Enter an equation"
+# msg_1 = "Do you even know what numbers are? Stay focused!"
+# msg_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
+# msg_3 = "Yeah... division by zero. Smart move..."
+# msg_4 = "Do you want to store the result? (y / n):"
+# msg_5 = "Do you want to continue calculations? (y / n):"
+#
+#
+# # Variable for storing the result of a correct equation.
+# memory = 0.0
+#
+# # Main loop. It loops until the user chooses 'n = no'. Decision-making is done in the inner loop at the end.
+# while True:
+#     # Loop for checking correct operands and operator.
+#     while True:
+#         print(msg_0)
+#         calc = input().split(" ")
+#         # print(calc)
+#         x = calc[0]
+#         operation = calc[1]
+#         y = calc[2]
+#
+#         # Check if any operand is 'M' = memory, then assign it to x and/or y.
+#         if x == "M":
+#             x = memory
+#         if y == "M":
+#             y = memory
+#
+#         # Operands must be numbers.
+#         # Operator must be one of the following: +, -, *, /
+#         try:
+#             float(x)
+#             float(y)
+#         except ValueError:
+#             print(msg_1)
+#             continue
+#         else:
+#             if operation not in ["+", "-", "*", "/"]:
+#                 print(msg_2)
+#                 continue
+#             elif operation == "/" and float(y) == 0:
+#                 print(msg_3)
+#                 continue
+#         break
+#
+#     # Calculates and prints the result of the input equation.
+#     result = 0.0
+#     match operation:
+#         case "+":
+#             # noinspection PyRedeclaration
+#             result = float(x) + float(y)
+#         case "-":
+#             # noinspection PyRedeclaration
+#             result = float(x) - float(y)
+#         case "*":
+#             # noinspection PyRedeclaration
+#             result = float(x) * float(y)
+#         case "/":
+#             # noinspection PyRedeclaration
+#             result = float(x) / float(y)
+#         case _:
+#             break
+#
+#     print(result)
+#
+#     # Loop for storing the result in memory. It loops until the user chooses 'y = yes' or 'n = no'.
+#     while True:
+#         print(msg_4)
+#         store_input = input()
+#
+#         if store_input == "y":
+#             memory = result
+#             break
+#         elif store_input == "n":
+#             break
+#         else:
+#             continue
+#
+#     # Loop for continuing with the calculator. It loops until the user chooses 'y = yes' or 'n = no'.
+#     while True:
+#         print(msg_5)
+#         continue_input = input()
+#
+#         if continue_input == "n":
+#             sys.exit()
+#         elif continue_input == "y":
+#             break
+#         else:
+#             continue
+#
+# # End of Stage 3
+
+
+# Stage 4
 import sys
 
 # List of input and warning/error messages.
@@ -82,19 +179,49 @@ msg_2 = "Yes ... an interesting math operation. You've slept through all classes
 msg_3 = "Yeah... division by zero. Smart move..."
 msg_4 = "Do you want to store the result? (y / n):"
 msg_5 = "Do you want to continue calculations? (y / n):"
+msg_6 = " ... lazy"
+msg_7 = " ... very lazy"
+msg_8 = " ... very, very lazy"
+msg_9 = "You are"
+
+
+# Function definition for checking correct operands and operator.
+def check(v1, v2, v3):
+    msg = ""
+    if is_one_digit(v1) and is_one_digit(v2):
+        msg = msg + msg_6
+    if (v1 == 1 or v2 == 1) and v3 == "*":
+        msg = msg + msg_7
+    if (v1 == 0 or v2 == 0) and (v3 == "*" or v3 == "+" or v3 == "-"):
+        msg = msg + msg_8
+    if msg != "":
+        msg = msg_9 + msg
+        print(msg)
+
+
+# Function for checking if operand is integer in interval <-10, 10>. Returns True if it is, else False.
+def is_one_digit(v):
+    if v.is_integer() and (-10 < v < 10):
+        output = True
+    else:
+        output = False
+
+    return output
+
 
 # Variable for storing the result of a correct equation.
 memory = 0.0
 
 # Main loop. It loops until the user chooses 'n = no'. Decision-making is done in the inner loop at the end.
 while True:
+    result = 0.0
     # Loop for checking correct operands and operator.
     while True:
         print(msg_0)
         calc = input().split(" ")
         # print(calc)
         x = calc[0]
-        operation = calc[1]
+        operator = calc[1]
         y = calc[2]
 
         # Check if any operand is 'M' = memory, then assign it to x and/or y.
@@ -111,32 +238,35 @@ while True:
         except ValueError:
             print(msg_1)
             continue
+        if operator not in ["+", "-", "*", "/"]:
+            print(msg_2)
+            continue
         else:
-            if operation not in ["+", "-", "*", "/"]:
-                print(msg_2)
-                continue
-            elif operation == "/" and float(y) == 0:
+            # Functions checks operands and operator.
+            check(float(x), float(y), operator)
+
+            if operator == "/" and float(y) == 0:
                 print(msg_3)
                 continue
-        break
 
-    # Calculates and prints the result of the input equation.
-    result = 0.0
-    match operation:
-        case "+":
-            # noinspection PyRedeclaration
-            result = float(x) + float(y)
-        case "-":
-            # noinspection PyRedeclaration
-            result = float(x) - float(y)
-        case "*":
-            # noinspection PyRedeclaration
-            result = float(x) * float(y)
-        case "/":
-            # noinspection PyRedeclaration
-            result = float(x) / float(y)
-        case _:
-            break
+            # Calculates and prints the result of the input equation.
+            match operator:
+                case "+":
+                    # noinspection PyRedeclaration
+                    result = float(x) + float(y)
+                case "-":
+                    # noinspection PyRedeclaration
+                    result = float(x) - float(y)
+                case "*":
+                    # noinspection PyRedeclaration
+                    result = float(x) * float(y)
+                case "/":
+                    # noinspection PyRedeclaration
+                    result = float(x) / float(y)
+                case _:
+                    pass
+
+        break
 
     print(result)
 
@@ -165,4 +295,4 @@ while True:
         else:
             continue
 
-# End of Stage 3
+# End of Stage 4
